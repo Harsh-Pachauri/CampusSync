@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { MdOutlineDelete, MdEdit } from "react-icons/md";
 import { IoMdAdd, IoMdClose } from "react-icons/io";
@@ -51,11 +51,7 @@ const Student = () => {
     },
   });
 
-  useEffect(() => {
-    getBranchHandler();
-  }, []);
-
-  const getBranchHandler = async () => {
+  const getBranchHandler = useCallback(async () => {
     try {
       toast.loading("Loading branches...");
       const response = await axiosWrapper.get(`/branch`, {
@@ -78,7 +74,13 @@ const Student = () => {
     } finally {
       toast.dismiss();
     }
-  };
+  }, [userToken]);
+
+  useEffect(() => {
+    getBranchHandler();
+  }, [getBranchHandler]);
+
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -487,7 +489,7 @@ const Student = () => {
         </div>
       )}
 
-      {branches.length == 0 && (
+      {branches.length === 0 && (
         <div className="flex justify-center items-center flex-col w-full mt-24">
           <CgDanger className="w-16 h-16 text-yellow-500 mb-4" />
           <p className="text-center text-lg">

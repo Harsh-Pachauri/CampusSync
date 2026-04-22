@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import axiosWrapper from "../../utils/AxiosWrapper";
 import Heading from "../../components/Heading";
@@ -8,7 +8,7 @@ const AddMarks = () => {
   const [branches, setBranches] = useState([]);
   const [dataLoading, setDataLoading] = useState(false);
   const userToken = localStorage.getItem("userToken");
-  const [students, setStudents] = useState([]);
+  const [, setStudents] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
@@ -36,7 +36,7 @@ const AddMarks = () => {
     }
   };
 
-  const fetchBranches = async () => {
+  const fetchBranches = useCallback(async () => {
     try {
       toast.loading("Loading branches...");
       const response = await axiosWrapper.get("/branch", {
@@ -58,9 +58,9 @@ const AddMarks = () => {
     } finally {
       toast.dismiss();
     }
-  };
+  }, [userToken]);
 
-  const fetchSubjects = async () => {
+  const fetchSubjects = useCallback(async () => {
     try {
       toast.loading("Loading subjects...");
       const response = await axiosWrapper.get(
@@ -85,9 +85,9 @@ const AddMarks = () => {
     } finally {
       toast.dismiss();
     }
-  };
+  }, [userToken, selectedBranch]);
 
-  const fetchExams = async () => {
+  const fetchExams = useCallback(async () => {
     try {
       toast.loading("Loading exams...");
       const response = await axiosWrapper.get(
@@ -112,7 +112,7 @@ const AddMarks = () => {
     } finally {
       toast.dismiss();
     }
-  };
+  }, [userToken, selectedSemester]);
 
   const searchStudents = async () => {
     setDataLoading(true);
@@ -155,43 +155,7 @@ const AddMarks = () => {
     }
   };
 
-  const getMarks = async (e) => {
-    setDataLoading(true);
-    toast.loading("Getting marks...");
-    setMasterMarksData([]);
-    try {
-      const response = await axiosWrapper.get(
-        `/marks?semester=${selectedSemester}&examId=${selectedExam?._id}`,
-        {
-          headers: { Authorization: `Bearer ${userToken}` },
-        }
-      );
 
-      toast.dismiss();
-      if (response.data.success) {
-        toast.success("Marks found!");
-        const combinedData = students.map((student) => {
-          const marks = response.data.data.find(
-            (mark) => mark.student._id === student._id
-          );
-          if (marks) {
-            return { ...student, obtainedMarks: marks.obtainedMarks };
-          } else {
-            return { ...student, obtainedMarks: 0 };
-          }
-        });
-        setMasterMarksData(combinedData);
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      toast.dismiss();
-      toast.error(error.response?.data?.message || "Error searching students");
-      console.error("Search error:", error);
-    } finally {
-      setDataLoading(false);
-    }
-  };
 
   const handleSubmit = async () => {
     if (!consent) {
@@ -259,19 +223,19 @@ const AddMarks = () => {
 
   useEffect(() => {
     fetchBranches();
-  }, [userToken]);
+  }, [fetchBranches]);
 
   useEffect(() => {
     if (selectedBranch) {
       fetchSubjects();
     }
-  }, [selectedBranch]);
+  }, [selectedBranch, fetchSubjects]);
 
   useEffect(() => {
     if (selectedSemester) {
       fetchExams();
     }
-  }, [selectedSemester]);
+  }, [selectedSemester, fetchExams]);
 
   return (
     <div className="w-full mx-auto mt-10 flex justify-center items-start flex-col mb-10">

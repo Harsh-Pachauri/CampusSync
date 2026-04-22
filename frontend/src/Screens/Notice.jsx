@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { IoMdLink, IoMdAdd, IoMdClose } from "react-icons/io";
 import { HiOutlineCalendar } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -35,7 +35,7 @@ const Notice = () => {
     }
   }, [token, navigate]);
 
-  const getNotices = async () => {
+  const getNotices = useCallback(async () => {
     try {
       setDataLoading(true);
       const response = await axiosWrapper.get("/notice", {
@@ -57,11 +57,11 @@ const Notice = () => {
     } finally {
       setDataLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     getNotices();
-  }, [router.pathname]);
+  }, [getNotices, router.pathname]);
 
   const openAddModal = () => {
     setEditingNotice(null);

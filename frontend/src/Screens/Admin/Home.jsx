@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Navbar from "../../components/Navbar";
 import { toast, Toaster } from "react-hot-toast";
 import Notice from "../Notice";
@@ -35,7 +35,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const userToken = localStorage.getItem("userToken");
 
-  const fetchUserDetails = async () => {
+  const fetchUserDetails = useCallback(async () => {
     setIsLoading(true);
     try {
       toast.loading("Loading user details...");
@@ -59,18 +59,18 @@ const Home = () => {
       setIsLoading(false);
       toast.dismiss();
     }
-  };
+  }, [dispatch, userToken]);
 
   useEffect(() => {
     fetchUserDetails();
-  }, [dispatch, userToken]);
+  }, [fetchUserDetails]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const pathMenuId = urlParams.get("page") || "home";
     const validMenu = MENU_ITEMS.find((item) => item.id === pathMenuId);
     setSelectedMenu(validMenu ? validMenu.id : "home");
-  }, [location.pathname]);
+  }, [location.search]);
 
   const renderContent = () => {
     if (isLoading) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { MdLink } from "react-icons/md";
 import Heading from "../../components/Heading";
 import { useSelector } from "react-redux";
@@ -17,15 +17,7 @@ const Material = () => {
     type: "",
   });
 
-  useEffect(() => {
-    fetchSubjects();
-  }, []);
-
-  useEffect(() => {
-    fetchMaterials();
-  }, [filters]);
-
-  const fetchSubjects = async () => {
+  const fetchSubjects = useCallback(async () => {
     try {
       setDataLoading(true);
       const response = await axiosWrapper.get(
@@ -49,9 +41,9 @@ const Material = () => {
     } finally {
       setDataLoading(false);
     }
-  };
+  }, [userData.semester, userData.branchId._id]);
 
-  const fetchMaterials = async () => {
+  const fetchMaterials = useCallback(async () => {
     try {
       setDataLoading(true);
       const queryParams = new URLSearchParams({
@@ -80,7 +72,17 @@ const Material = () => {
     } finally {
       setDataLoading(false);
     }
-  };
+  }, [userData.semester, userData.branchId._id, filters]);
+
+  useEffect(() => {
+    fetchSubjects();
+  }, [fetchSubjects]);
+
+  useEffect(() => {
+    fetchMaterials();
+  }, [fetchMaterials]);
+
+
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

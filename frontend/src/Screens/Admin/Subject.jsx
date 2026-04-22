@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { MdOutlineDelete, MdEdit } from "react-icons/md";
 import { IoMdAdd } from "react-icons/io";
@@ -27,12 +27,7 @@ const Subject = () => {
   const userToken = localStorage.getItem("userToken");
   const [dataLoading, setDataLoading] = useState(false);
 
-  useEffect(() => {
-    getSubjectHandler();
-    getBranchHandler();
-  }, []);
-
-  const getSubjectHandler = async () => {
+  const getSubjectHandler = useCallback(async () => {
     try {
       setDataLoading(true);
       const response = await axiosWrapper.get(`/subject`, {
@@ -54,9 +49,9 @@ const Subject = () => {
     } finally {
       setDataLoading(false);
     }
-  };
+  }, [userToken]);
 
-  const getBranchHandler = async () => {
+  const getBranchHandler = useCallback(async () => {
     try {
       setDataLoading(true);
       const response = await axiosWrapper.get(`/branch`, {
@@ -78,7 +73,14 @@ const Subject = () => {
     } finally {
       setDataLoading(false);
     }
-  };
+  }, [userToken]);
+
+  useEffect(() => {
+    getSubjectHandler();
+    getBranchHandler();
+  }, [getSubjectHandler, getBranchHandler]);
+
+
 
   const addSubjectHandler = async () => {
     if (
@@ -202,7 +204,7 @@ const Subject = () => {
       </div>
       {dataLoading && <Loading />}
 
-      {!dataLoading && branch.length == 0 && (
+      {!dataLoading && branch.length === 0 && (
         <div className="flex justify-center items-center flex-col w-full mt-24">
           <CgDanger className="w-16 h-16 text-yellow-500 mb-4" />
           <p className="text-center text-lg">

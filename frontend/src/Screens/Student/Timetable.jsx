@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FiDownload } from "react-icons/fi";
 import Heading from "../../components/Heading";
@@ -42,7 +41,7 @@ const Timetable = () => {
       }
     };
     userData && getTimetable();
-  }, [userData, userData.branchId, userData.semester]);
+  }, [userData]);
 
   return (
     <div className="w-full mx-auto mt-10 flex justify-center items-start flex-col mb-10">

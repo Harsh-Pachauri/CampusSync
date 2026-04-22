@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { FiUpload, FiEdit2, FiTrash2 } from "react-icons/fi";
 import Heading from "../../components/Heading";
 import { AiOutlineClose } from "react-icons/ai";
@@ -32,19 +31,9 @@ const Material = () => {
     branch: "",
     type: "",
   });
-  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchSubjects();
-    fetchBranches();
-    fetchMaterials();
-  }, []);
 
-  useEffect(() => {
-    fetchMaterials();
-  }, [filters]);
-
-  const fetchSubjects = async () => {
+  const fetchSubjects = useCallback(async () => {
     try {
       toast.loading("Loading subjects...");
       const response = await axiosWrapper.get("/subject", {
@@ -67,9 +56,9 @@ const Material = () => {
     } finally {
       toast.dismiss();
     }
-  };
+  }, []);
 
-  const fetchBranches = async () => {
+  const fetchBranches = useCallback(async () => {
     try {
       toast.loading("Loading branches...");
       const response = await axiosWrapper.get("/branch", {
@@ -92,9 +81,9 @@ const Material = () => {
     } finally {
       toast.dismiss();
     }
-  };
+  }, []);
 
-  const fetchMaterials = async () => {
+  const fetchMaterials = useCallback(async () => {
     try {
       toast.loading("Loading materials...");
       const queryParams = new URLSearchParams();
@@ -122,7 +111,18 @@ const Material = () => {
     } finally {
       toast.dismiss();
     }
-  };
+  }, [filters]);
+
+  useEffect(() => {
+    fetchSubjects();
+    fetchBranches();
+    fetchMaterials();
+  }, [fetchSubjects, fetchBranches, fetchMaterials]);
+
+  useEffect(() => {
+    fetchMaterials();
+  }, [filters, fetchMaterials]);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

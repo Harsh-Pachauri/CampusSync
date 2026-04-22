@@ -1,7 +1,17 @@
 import axios from "axios";
-import { baseApiURL } from "../baseUrl";
+
 const axiosWrapper = axios.create({
-  baseURL: baseApiURL(),
+  baseURL: import.meta.env.VITE_API_URL
+});
+
+axiosWrapper.interceptors.request.use((config) => {
+  // Ensure the URL starts with /api if it's a relative path and doesn't have it
+  if (config.url && config.url.startsWith('/') && !config.url.startsWith('/api')) {
+    config.url = `/api${config.url}`;
+  }
+  return config;
+}, (error) => {
+  return Promise.reject(error);
 });
 
 axiosWrapper.interceptors.response.use(

@@ -143,7 +143,7 @@ const Login = () => {
 
     try {
       const response = await axiosWrapper.post(
-        `/${selected.toLowerCase()}/login`,
+        `/api/${selected.toLowerCase()}/login`,
         formData,
         {
           headers: { "Content-Type": "application/json" },

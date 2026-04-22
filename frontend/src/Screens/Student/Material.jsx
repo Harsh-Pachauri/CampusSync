@@ -161,7 +161,7 @@ const Material = () => {
                         variant="primary"
                         onClick={() => {
                           window.open(
-                            `${process.env.REACT_APP_MEDIA_LINK}/${material.file}`
+                            `${import.meta.env.VITE_MEDIA_LINK}/${material.file}`
                           );
                         }}
                       >

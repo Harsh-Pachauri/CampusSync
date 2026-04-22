@@ -1,0 +1,62 @@
+/* CAMPUSSYNC DESIGN TOKENS */
+:root {
+  /* Colors */
+  --cs-navy: #0a1628;
+  --cs-blue: #1a56db;
+  --cs-blue-mid: #2563eb;
+  --cs-blue-light: #3b82f6;
+  --cs-sky: #dbeafe;
+  --cs-sky-soft: #eff6ff;
+  --cs-white: #ffffff;
+  --cs-gray-100: #f1f5f9;
+  --cs-gray-200: #e2e8f0;
+  --cs-gray-400: #94a3b8;
+  --cs-gray-600: #475569;
+  --cs-gray-800: #1e293b;
+  --cs-accent: #f59e0b;
+  --cs-green: #10b981;
+  --cs-red: #ef4444;
+
+  /* Typography */
+  --cs-font-display: "Playfair Display", serif;
+  --cs-font-body: "DM Sans", sans-serif;
+
+  /* Shadows */
+  --cs-shadow-sm: 0 1px 6px rgba(26, 86, 219, 0.08);
+  --cs-shadow-md: 0 4px 20px rgba(26, 86, 219, 0.12);
+  --cs-shadow-lg: 0 12px 40px rgba(10, 22, 40, 0.12);
+
+  /* Border Radius */
+  --cs-radius-sm: 8px;
+  --cs-radius-md: 12px;
+  --cs-radius-lg: 16px;
+  --cs-radius-xl: 20px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: #f1f5f9;
+  color: #1e293b;
+  margin: 0;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+::-webkit-scrollbar {
+  display: none;
+}

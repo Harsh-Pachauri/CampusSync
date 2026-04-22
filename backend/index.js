@@ -8,8 +8,7 @@ var cors = require("cors");
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://campus-sync-a51q.vercel.app"],
-    credentials: true,
+    origin: process.env.FRONTEND_API_LINK,
   })
 );
 

@@ -9,33 +9,33 @@ const seedData = async () => {
     // Clear existing admin data
     await adminDetails.deleteMany({});
 
-    const password = "admin123";
-    const employeeId = 123456;
+    const password = "Harsh@123"; // you can change this
+    const employeeId = 875035; // derived from your phone for uniqueness
 
     const adminDetail = {
       employeeId: employeeId,
-      firstName: "Sundar",
-      middleName: "R",
-      lastName: "Pichai",
-      email: "admin@gmail.com",
-      phone: "1234567890",
-      profile: "Faculty_Profile_123456.jpg",
-      address: "123 College Street",
-      city: "College City",
-      state: "State",
-      pincode: "123456",
+      firstName: "Harsh",
+      middleName: "",
+      lastName: "Pachauri",
+      email: "pachauriharsh2005@gmail.com",
+      phone: "8750350158",
+      profile: "harsh.jpg",
+      address: "Badarpur",
+      city: "Delhi",
+      state: "Delhi",
+      pincode: "110044",
       country: "India",
       gender: "male",
-      dob: new Date("1990-01-01"),
+      dob: new Date("2005-03-20"),
       designation: "System Administrator",
       joiningDate: new Date(),
-      salary: 50000,
+      salary: 60000,
       status: "active",
       isSuperAdmin: true,
       emergencyContact: {
         name: "Emergency Contact",
-        relationship: "Spouse",
-        phone: "9876543210",
+        relationship: "Parent",
+        phone: "8750350158",
       },
       bloodGroup: "O+",
       password: password,
